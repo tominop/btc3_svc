@@ -1,0 +1,28 @@
+{
+    "name": "btc3_svc",
+    "version": "1.0.0",
+    "description": "btc3_api testnet3 microservices",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \\\\\\\"Error: no test specified\\\\\\\" && exit 1",
+        "start": "node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "tominop\\btc3_svc"
+    },
+    "keywords": [
+        "btc3",
+        "testnet",
+        "balance",
+        "Tx",
+        "API",
+        "microservice"
+    ],
+    "author": "Oleg Tomin",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^0.17.1",
+        "express": "^4.16.2"
+    }
+}
