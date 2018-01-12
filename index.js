@@ -17,7 +17,7 @@ app.get("/btc3/balance/:addrs", (req, res) => {
         });
 })
 
-const port = process.env.PORT_BTC || 8100
+const port = process.env.PORT_BTC || 8103
 
 app.listen(port, () => {
     console.log(`btc_svc listening on ${port}`)
