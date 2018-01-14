@@ -1,17 +1,38 @@
+ /*!
+ * @title btc3_svc BTC API microservice for tesnet3
+ * @author Oleg Tomin - <ot@limex.io>
+ * @dev Basic implementaion of BTC3 API functions  
+ * MIT Licensed Copyright(c) 2018-2019
+ */
+
 const express = require("express")
 const app = express()
 
-const axios = require('axios')
-    //  AXIOS - compact lib for HttpRequest
+const axios = require('axios')    //  AXIOS - compact lib for HttpRequest
 
-const btcUrl = 'https://api.blockcypher.com/v1/btc/test3'
-    //  Blochcypher API for Bitcoin testnet3
+const btcUrl = 'https://api.blockcypher.com/v1/btc/test3'    //  Blochcypher API provider for Bitcoin testnet3
 
+    //  Route - check connect to API provider
+app.get("/btc3/api/:token", (req, res) => {
+    const token = req.params.token
+    axios.get(btcUrl + '/balance/' + 'token=' + token) 
+        .then(response => {
+            res.header("Access-Control-Allow-Origin", "*")
+            res.json({error: false, host: btcUrl, limit: response.data.limit})
+            console.log('p: '+ btcUrl +'  limit:' + response.data.limit)
+        })
+        .catch(error => {
+            res.header("Access-Control-Allow-Origin", "*")
+            res.json({error: true})
+            console.log('Error! p: '+ btcUrl + ' not connected!!!')
+        })
+})
+        
     //  Route - balance of address
 app.post("/btc3/balance/:addrs", (req, res) => {
     //  Standart format API 
     const addrsBTC = req.params.addrs
-    axios.get(btcUrl + '/addrs/' + addrsBTC + '/balewance')
+    axios.get(btcUrl + '/addrs/' + addrsBTC + '/balance')
         .then(response => {
             res.header("Access-Control-Allow-Origin", "*")
             res.json({ balance: response.data.final_balance / 10 ** 8 })
@@ -24,7 +45,7 @@ app.post("/btc3/balance/:addrs", (req, res) => {
         })
 })
 
-    //  Route - make tx
+    //  Route - make, sign, send transfer Tx 
 app.post("/btc3/newtx/:tx", (req, res) => {
     //  Standart format API for new tx
     const btcTx = req.params.tx
@@ -78,8 +99,8 @@ app.post("/btc3/newtx/:tx", (req, res) => {
         })
 })
 
-const port = process.env.PORT_BTC || 8103
+const port = process.env.PORT_BTC3 || 8103
 
 app.listen(port, () => {
-    console.log(`btc_svc listening on ${port}`)
+    console.log(`Microservice btc_svc listening on ${port}`)
 })
